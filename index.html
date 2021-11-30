@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>jQuery TIme Picker</title>
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <script src="jquery-3.6.0.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+    <script src="jquery-time-picker.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="mb-5">jquery Timepicker Plugin</h1>
+        <div id="timePicker"></div>
+        <br>
+        Value:<label id="timePickerValue"></label>
+        <br>
+        <button class="btn btn-primary" id="btnGetValue">Get Value</button>
+        <button class="btn btn-primary" id="btnSetValue">Set Value to 10:25 PM</button>
+        <button class="btn btn-primary" id="btnSetDisabled">Set Disabled</button>
+        <button class="btn btn-primary" id="btnSetEnabled">Set Enabled</button>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $("#timePicker").timepicker();
+            $("#btnGetValue").click(function () {
+                $("#timePickerValue").html($("#timePicker").timepicker().getValue());
+            });
+            $("#btnSetValue").click(function () {
+                $("#timePicker").timepicker().setValue("10:25 PM")
+            });
+            $("#btnSetDisabled").click(function () {
+                $("#timePicker").timepicker().setDisabled()
+            });
+            $("#btnSetEnabled").click(function () {
+                $("#timePicker").timepicker().setEnabled()
+            });
+        });
+    </script>
+</body>
+
+</html>
