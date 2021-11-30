@@ -10,33 +10,77 @@
 </head>
 
 <body>
-    <div class="container">
-        <h1 class="mb-5">jquery Timepicker Plugin</h1>
-        <div id="timePicker"></div>
+    <div class="container mb-5">
+        <h1 class="mb-3 text-center mt-1">jquery Timepicker Plugin</h1>
+        <div>
+            <div class="h4">How to add?</div>
+            <p>Add <a href="jquery-time-picker.js" target="_blank">jquery-time-picker.js</a>, jquery, bootstrap CSS and js files in your HTML.</p>
+        </div>
+        <div class="h4">Basic</div>
+        <pre class="bg-light">
+            <code id="basicTimepickerHTML"></code>
+            <code id="basicTimepickerJS"></code>
+            <code id="basicTimepickerJS1"></code>
+            <code id="basicTimepickerJS2"></code>
+            <code id="basicTimepickerJS3"></code>
+            <code id="basicTimepickerJS4"></code>
+        </pre>
+        <div id="timePicker" style="width: 20rem;"></div>
         <br>
-        Value:<label id="timePickerValue"></label>
+        Selected Value: <label id="timePickerValue"></label>
         <br>
         <button class="btn btn-primary" id="btnGetValue">Get Value</button>
         <button class="btn btn-primary" id="btnSetValue">Set Value to 10:25 PM</button>
         <button class="btn btn-primary" id="btnSetDisabled">Set Disabled</button>
         <button class="btn btn-primary" id="btnSetEnabled">Set Enabled</button>
+        <br>
+        <br>
+        <div class="h4">With Options</div>
+        <pre class="bg-light">
+            <code id="basicTimepickerJS5"></code>
+        </pre>
+        <div id="timePicker2"></div>
+        <br>
+        <div class="h4">onChange callback</div>
+        <pre class="bg-light">
+            <code id="basicTimepickerJS6"></code>
+        </pre>
+        <div id="timePicker3"></div>
     </div>
 
     <script>
         $(document).ready(function () {
-            $("#timePicker").timepicker();
+            $("#timePicker").timepicker({});
             $("#btnGetValue").click(function () {
                 $("#timePickerValue").html($("#timePicker").timepicker().getValue());
             });
             $("#btnSetValue").click(function () {
-                $("#timePicker").timepicker().setValue("10:25 PM")
+                $("#timePicker").timepicker().setValue("10:25 PM");
             });
             $("#btnSetDisabled").click(function () {
-                $("#timePicker").timepicker().setDisabled()
+                $("#timePicker").timepicker().setDisabled();
             });
             $("#btnSetEnabled").click(function () {
-                $("#timePicker").timepicker().setEnabled()
+                $("#timePicker").timepicker().setEnabled();
             });
+            $("#timePicker2").timepicker({
+                value: "05:15 PM",
+                disabled: true
+            });
+            $("#timePicker3").timepicker({
+                onChange: function (value) {
+                    alert(value);
+                }
+            });
+
+            $("#basicTimepickerHTML").text('<div id="timePicker" style="width: 20rem;"></div>');
+            $("#basicTimepickerJS").text('$("#timePicker").timepicker({});');
+            $("#basicTimepickerJS1").text('$("#timePicker").timepicker().getValue();');
+            $("#basicTimepickerJS2").text('$("#timePicker").timepicker().setValue("10:25 PM");');
+            $("#basicTimepickerJS3").text('$("#timePicker").timepicker().setDisabled();');
+            $("#basicTimepickerJS4").text('$("#timePicker").timepicker().setEnabled();');
+            $("#basicTimepickerJS5").html(`$("#timePicker2").timepicker({ value: "05:15 PM", disabled: true });`);
+            $("#basicTimepickerJS6").html(`$("#timePicker2").timepicker({ onChange: function(value){ alert(value); } });`);
         });
     </script>
 </body>

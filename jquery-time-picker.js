@@ -1,8 +1,10 @@
 (function ($) {
-  $.fn.timepicker = function () {
+  $.fn.timepicker = function (options) {
     if (!$(this).is(":empty")) {
       return this;
     }
+
+    var opts = $.extend({}, options);
 
     var id = $(this).attr("id");
     var hours = "";
@@ -24,7 +26,7 @@
     );
     $(this).append(":");
     $(this).append(
-      "<select class='form-select ms-2 me-5 minutes-dropdown'>" +
+      "<select class='form-select ms-2 me-3 minutes-dropdown'>" +
         minutes +
         "</select>"
     );
@@ -49,15 +51,52 @@
         "</div>"
     );
 
+    var that = this;
+
+    if (opts.onChange) {
+      $(this)
+        .find(".hours-dropdown")
+        .change(function (event) {
+          var value = $.fn._getValue(that);
+          options.onChange(value);
+        });
+      $(this)
+        .find(".minutes-dropdown")
+        .change(function (event) {
+          var value = $.fn._getValue(that);
+          options.onChange(value);
+        });
+      $(this)
+        .find("#" + id + "MeridianAM")
+        .change(function (event) {
+          var value = $.fn._getValue(that);
+          options.onChange(value);
+        });
+      $(this)
+        .find("#" + id + "MeridianPM")
+        .change(function (event) {
+          var value = $.fn._getValue(that);
+          options.onChange(value);
+        });
+    }
+
+    if (opts.value) {
+      $.fn._setValue(that, opts.value);
+    }
+
+    if (opts.disabled) {
+      $.fn._setDisabled(this);
+    }
+
     return this;
   };
 
-  $.fn.getValue = function () {
-    var id = $(this).attr("id");
+  $.fn._getValue = function (element) {
+    var id = $(element).attr("id");
 
-    var selectedHour = $(this).find(".hours-dropdown")[0].value;
-    var selectedMinute = $(this).find(".minutes-dropdown")[0].value;
-    var selectedMeridian = $(this).find("#" + id + "MeridianAM")[0].checked
+    var selectedHour = $(element).find(".hours-dropdown")[0].value;
+    var selectedMinute = $(element).find(".minutes-dropdown")[0].value;
+    var selectedMeridian = $(element).find("#" + id + "MeridianAM")[0].checked
       ? "AM"
       : "PM";
     if (!selectedHour || !selectedMinute) {
@@ -66,13 +105,17 @@
     return selectedHour + ":" + selectedMinute + " " + selectedMeridian;
   };
 
-  $.fn.setValue = function (value) {
-    var id = $(this).attr("id");
+  $.fn.getValue = function () {
+    return $.fn._getValue(this);
+  };
+
+  $.fn._setValue = function (element, value) {
+    var id = $(element).attr("id");
 
     if (!value || value.length == 0) {
-      $(this).find(".hours-dropdown")[0].value = null;
-      $(this).find(".minutes-dropdown")[0].value = null;
-      $(this).find("#" + id + "MeridianAM")[0].checked = true;
+      $(element).find(".hours-dropdown")[0].value = null;
+      $(element).find(".minutes-dropdown")[0].value = null;
+      $(element).find("#" + id + "MeridianAM")[0].checked = true;
       return;
     }
     var a = value.split(":");
@@ -80,26 +123,34 @@
     var b = a[1].split(" ");
     var minute = b[0];
     var meridian = b[1];
-    $(this).find(".hours-dropdown")[0].value = hour;
-    $(this).find(".minutes-dropdown")[0].value = minute;
+    $(element).find(".hours-dropdown")[0].value = hour;
+    $(element).find(".minutes-dropdown")[0].value = minute;
     if (meridian == "AM") {
-      $(this).find("#" + id + "MeridianAM")[0].checked = true;
+      $(element).find("#" + id + "MeridianAM")[0].checked = true;
     } else {
-      $(this).find("#" + id + "MeridianPM")[0].checked = true;
+      $(element).find("#" + id + "MeridianPM")[0].checked = true;
     }
   };
 
-  $.fn.setDisabled = function () {
-    var id = $(this).attr("id");
+  $.fn.setValue = function (value) {
+    $.fn._setValue(this, value);
+  };
 
-    $(this).find(".hours-dropdown").prop("disabled", true);
-    $(this).find(".minutes-dropdown").prop("disabled", true);
-    $(this)
+  $.fn._setDisabled = function (element) {
+    var id = $(element).attr("id");
+
+    $(element).find(".hours-dropdown").prop("disabled", true);
+    $(element).find(".minutes-dropdown").prop("disabled", true);
+    $(element)
       .find("#" + id + "MeridianAM")
       .prop("disabled", true);
-    $(this)
+    $(element)
       .find("#" + id + "MeridianPM")
       .prop("disabled", true);
+  };
+
+  $.fn.setDisabled = function () {
+    $.fn._setDisabled(this);
   };
 
   $.fn.setEnabled = function () {
